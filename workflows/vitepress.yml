@@ -1,0 +1,30 @@
+name: Deploy VitePress site
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build VitePress site
+        run: npm run docs:build
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy@v4
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: main
+          DIR: docs
